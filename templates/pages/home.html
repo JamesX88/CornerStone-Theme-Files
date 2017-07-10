@@ -1,0 +1,64 @@
+---
+products:
+    new:
+        limit: {{theme_settings.homepage_new_products_count}}
+    featured:
+        limit: {{theme_settings.homepage_featured_products_count}}
+    top_sellers:
+        limit: {{theme_settings.homepage_top_products_count}}
+carousel: {{theme_settings.homepage_show_carousel}}
+blog:
+    recent_posts:
+        limit: {{theme_settings.homepage_blog_posts_count}}
+        summary: 255
+---
+{{#partial "hero"}}
+    {{#if carousel}}
+        {{> components/carousel}}
+    {{/if}}
+    {{{snippet 'home_content'}}}
+{{/partial}}
+
+{{#partial "page"}}
+
+    {{#each shipping_messages}}
+        {{> components/common/alert-info message}}
+    {{/each}}
+
+<div class="main full">
+    {{#if products.featured}}
+        {{> components/products/featured products=products.featured columns=theme_settings.homepage_featured_products_column_count}}
+    {{/if}}
+    {{#if products.top_sellers}}
+        {{> components/products/top products=products.top_sellers columns=theme_settings.homepage_top_products_column_count}}
+    {{/if}}
+
+    {{#if products.new}}
+        {{> components/products/new products=products.new columns=theme_settings.homepage_new_products_column_count}}
+    {{/if}}
+</div>
+    <hr>
+    <div class="blog-latest-posts" style="min-height: 450px;">
+      <div class="container">
+        <h3 class="section-title" style="font-size: 28px; margin: 2rem; text-align: center;">Recent Cheap E-Juice Blogs</h3>
+        <div>
+            {{#each blog.recent_posts}}
+            <article class="post">
+              {{#if thumbnail.data.length}}
+                <a class="post-thumb" href="{{url}}">
+                  <img src="{{getImage thumbnail 'blog-thumb'}}" alt="{{thumbnail.alt}}" />
+                </a>
+              {{/if}}
+              <h2 class="post-title" style="font-size: 24px;"><a href="{{url}}">{{title}}</a></h2>
+              <div class="post-summary">{{{summary}}}</div>
+            
+              <div class="post-summary-actions">
+                  <a class="post-read-more" href="{{url}}">Read more...</a>
+              </div>
+            </article>
+            {{/each}}
+        </div>
+      </div>
+    </div>
+{{/partial}}
+{{> layout/base}}
